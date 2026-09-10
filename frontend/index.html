@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#FFFFFF">
+    <title>Онлайн-магазин | Telegram Mini App</title>
+
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Tailwind CSS (CDN) with Emerald theme configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ECFDF5',
+                            100: '#D1FAE5',
+                            200: '#A7F3D0',
+                            300: '#6EE7B7',
+                            400: '#34D399',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            900: '#064E3B',
+                        }
+                    },
+                    borderRadius: {
+                        '2xl': '1rem',
+                        '3xl': '1.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-emerald-100 selection:text-emerald-900">
+
+    <!-- TOP HEADER -->
+    <header class="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-100 px-4 py-3">
+        <div class="max-w-lg mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 text-white flex items-center justify-center shadow-sm shadow-emerald-500/20 font-extrabold text-base">
+                    ✦
+                </div>
+                <div>
+                    <h1 class="text-sm font-extrabold text-slate-900 tracking-tight leading-none">PREMIUM STORE</h1>
+                    <span id="user-greeting" class="text-[11px] text-slate-400 font-medium">Загрузка...</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 border border-emerald-100 rounded-full text-[11px] font-semibold text-emerald-700">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>Онлайн</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <main class="max-w-lg mx-auto px-4 py-3.5">
+
+        <!-- ==================== TAB 1: CATALOG ==================== -->
+        <section id="tab-catalog" class="space-y-3.5 animate-fade-in">
+            <!-- Search & Filters -->
+            <div class="space-y-2.5">
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0118 0z"></path></svg>
+                    </div>
+                    <input type="text" 
+                           id="search-input" 
+                           placeholder="Поиск товаров по каталогу..."
+                           class="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-white border border-slate-200/80 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 shadow-xs transition-all">
+                    <button id="clear-search-btn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 hidden">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                    <button id="filter-all" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white shadow-sm transition-all active:scale-95">
+                        Все товары
+                    </button>
+                    <button id="filter-stock" class="px-3.5 py-1.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all active:scale-95">
+                        В наличии
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products Grid Container -->
+            <div id="products-grid" class="grid grid-cols-2 gap-2.5 pt-1">
+                <!-- Dynamically populated via catalog.js -->
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: MY ORDERS ==================== -->
+        <section id="tab-orders" class="hidden space-y-3 animate-fade-in">
+            <div class="flex items-center justify-between pb-1">
+                <h2 class="text-base font-bold text-slate-900">Мои заказы</h2>
+                <button onclick="OrdersComponent.loadOrders()" class="text-xs text-emerald-600 font-bold hover:underline flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <span>Обновить</span>
+                </button>
+            </div>
+
+            <div id="orders-list">
+                <!-- Dynamically populated via orders.js -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== MODAL 1: PRODUCT DETAILS ==================== -->
+    <div id="product-modal" class="fixed inset-0 z-40 hidden">
+        <!-- Backdrop -->
+        <div class="modal-backdrop absolute inset-0 transition-opacity" onclick="ProductModalComponent.close()"></div>
+        <!-- Bottom Sheet Modal Content -->
+        <div class="absolute bottom-0 inset-x-0 bg-white rounded-t-3xl max-w-lg mx-auto shadow-2xl animate-slide-up z-10" id="product-modal-content">
+            <!-- Populated via productModal.js -->
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: CHECKOUT ==================== -->
+    <div id="checkout-modal" class="fixed inset-0 z-40 hidden">
+        <!-- Backdrop -->
+        <div class="modal-backdrop absolute inset-0 transition-opacity" onclick="CheckoutModalComponent.close()"></div>
+        <!-- Bottom Sheet Modal Content -->
+        <div class="absolute bottom-0 inset-x-0 bg-white rounded-t-3xl max-w-lg mx-auto shadow-2xl animate-slide-up z-10" id="checkout-modal-content">
+            <!-- Populated via checkoutModal.js -->
+        </div>
+    </div>
+
+    <!-- ==================== BOTTOM NAVIGATION BAR ==================== -->
+    <nav class="fixed bottom-0 inset-x-0 z-30 glass-nav max-w-lg mx-auto safe-bottom-padding">
+        <div class="flex items-center justify-around px-4 py-1.5">
+            <!-- Tab 1: Catalog -->
+            <button id="nav-catalog" 
+                    onclick="App.switchTab('catalog')" 
+                    class="flex flex-col items-center justify-center flex-1 py-1 text-emerald-600 font-bold transition-all active:scale-95">
+                <div class="nav-icon-bg w-10 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-0.5 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                </div>
+                <span class="text-[11px] leading-tight">Каталог</span>
+            </button>
+
+            <!-- Tab 2: Orders -->
+            <button id="nav-orders" 
+                    onclick="App.switchTab('orders')" 
+                    class="flex flex-col items-center justify-center flex-1 py-1 text-slate-400 font-medium transition-all active:scale-95">
+                <div class="nav-icon-bg w-10 h-7 rounded-full bg-transparent text-slate-400 flex items-center justify-center mb-0.5 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                </div>
+                <span class="text-[11px] leading-tight">Мои заказы</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- SCRIPTS -->
+    <script src="/static/js/telegram.js"></script>
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/components/catalog.js"></script>
+    <script src="/static/js/components/productModal.js"></script>
+    <script src="/static/js/components/checkoutModal.js"></script>
+    <script src="/static/js/components/orders.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

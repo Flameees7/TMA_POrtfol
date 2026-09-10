@@ -1,0 +1,97 @@
+Date : 2026-09-11 00:47:27
+Directory : d:\Каталог товаров Портфолио
+Total : 47 files,  3584 codes, 394 comments, 646 blanks, all 4624 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| Python           |         34 |      2,014 |        310 |        413 |      2,737 |
+| JavaScript       |          8 |      1,139 |         47 |        143 |      1,329 |
+| Markdown         |          1 |        165 |          0 |         47 |        212 |
+| HTML             |          1 |        134 |         24 |         18 |        176 |
+| PostCSS          |          1 |        108 |          8 |         19 |        135 |
+| pip requirements |          1 |         12 |          5 |          5 |         22 |
+| JSON             |          1 |         12 |          0 |          1 |         13 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                        | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                           |         47 |      3,584 |        394 |        646 |      4,624 |
+| . (Files)                                                                   |          5 |        364 |         49 |         99 |        512 |
+| backend                                                                     |         31 |      1,827 |        266 |        366 |      2,459 |
+| backend\app                                                                 |         31 |      1,827 |        266 |        366 |      2,459 |
+| backend\app (Files)                                                         |          4 |        175 |         43 |         50 |        268 |
+| backend\app\api                                                             |          6 |        393 |         53 |         69 |        515 |
+| backend\app\bot                                                             |         10 |        535 |         69 |        107 |        711 |
+| backend\app\bot (Files)                                                     |          2 |         55 |         14 |         16 |         85 |
+| backend\app\bot\handlers                                                    |          3 |        199 |         31 |         44 |        274 |
+| backend\app\bot\keyboards                                                   |          3 |        137 |         12 |         21 |        170 |
+| backend\app\bot\services                                                    |          2 |        144 |         12 |         26 |        182 |
+| backend\app\models                                                          |          4 |        183 |         23 |         44 |        250 |
+| backend\app\schemas                                                         |          4 |        162 |         16 |         31 |        209 |
+| backend\app\services                                                        |          3 |        379 |         62 |         65 |        506 |
+| credentials                                                                 |          1 |         12 |          0 |          1 |         13 |
+| frontend                                                                    |         10 |      1,381 |         79 |        180 |      1,640 |
+| frontend (Files)                                                            |          1 |        134 |         24 |         18 |        176 |
+| frontend\css                                                                |          1 |        108 |          8 |         19 |        135 |
+| frontend\js                                                                 |          8 |      1,139 |         47 |        143 |      1,329 |
+| frontend\js (Files)                                                         |          4 |        276 |         27 |         58 |        361 |
+| frontend\js\components                                                      |          4 |        863 |         20 |         85 |        968 |
++-----------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                    | language         | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| d:\Каталог товаров Портфолио\README.md                                      | Markdown         |        165 |          0 |         47 |        212 |
+| d:\Каталог товаров Портфолио\backend\app\__init__.py                        | Python           |          1 |          3 |          2 |          6 |
+| d:\Каталог товаров Портфолио\backend\app\api\__init__.py                    | Python           |          0 |          3 |          1 |          4 |
+| d:\Каталог товаров Портфолио\backend\app\api\dependencies.py                | Python           |        160 |         18 |         23 |        201 |
+| d:\Каталог товаров Портфолио\backend\app\api\orders.py                      | Python           |        130 |         17 |         20 |        167 |
+| d:\Каталог товаров Портфолио\backend\app\api\products.py                    | Python           |         51 |          6 |         13 |         70 |
+| d:\Каталог товаров Портфолио\backend\app\api\store_info.py                  | Python           |         33 |          6 |          8 |         47 |
+| d:\Каталог товаров Портфолио\backend\app\api\sync.py                        | Python           |         19 |          3 |          4 |         26 |
+| d:\Каталог товаров Портфолио\backend\app\bot\__init__.py                    | Python           |          0 |          3 |          1 |          4 |
+| d:\Каталог товаров Портфолио\backend\app\bot\bot_instance.py                | Python           |         55 |         11 |         15 |         81 |
+| d:\Каталог товаров Портфолио\backend\app\bot\handlers\__init__.py           | Python           |          6 |          0 |          2 |          8 |
+| d:\Каталог товаров Портфолио\backend\app\bot\handlers\admin_orders.py       | Python           |        117 |         19 |         29 |        165 |
+| d:\Каталог товаров Портфолио\backend\app\bot\handlers\user_commands.py      | Python           |         76 |         12 |         13 |        101 |
+| d:\Каталог товаров Портфолио\backend\app\bot\keyboards\__init__.py          | Python           |         14 |          0 |          2 |         16 |
+| d:\Каталог товаров Портфолио\backend\app\bot\keyboards\admin_kb.py          | Python           |         76 |          6 |         11 |         93 |
+| d:\Каталог товаров Портфолио\backend\app\bot\keyboards\user_kb.py           | Python           |         47 |          6 |          8 |         61 |
+| d:\Каталог товаров Портфолио\backend\app\bot\services\__init__.py           | Python           |         10 |          0 |          2 |         12 |
+| d:\Каталог товаров Портфолио\backend\app\bot\services\notifier.py           | Python           |        134 |         12 |         24 |        170 |
+| d:\Каталог товаров Портфолио\backend\app\config.py                          | Python           |         40 |         13 |         14 |         67 |
+| d:\Каталог товаров Портфолио\backend\app\database.py                        | Python           |         44 |          9 |         11 |         64 |
+| d:\Каталог товаров Портфолио\backend\app\main.py                            | Python           |         90 |         18 |         23 |        131 |
+| d:\Каталог товаров Портфолио\backend\app\models\__init__.py                 | Python           |         11 |          0 |          2 |         13 |
+| d:\Каталог товаров Портфолио\backend\app\models\order.py                    | Python           |         97 |          9 |         23 |        129 |
+| d:\Каталог товаров Портфолио\backend\app\models\product.py                  | Python           |         48 |         10 |         11 |         69 |
+| d:\Каталог товаров Портфолио\backend\app\models\user.py                     | Python           |         27 |          4 |          8 |         39 |
+| d:\Каталог товаров Портфолио\backend\app\schemas\__init__.py                | Python           |         23 |          0 |          2 |         25 |
+| d:\Каталог товаров Портфолио\backend\app\schemas\auth.py                    | Python           |         25 |          6 |          7 |         38 |
+| d:\Каталог товаров Портфолио\backend\app\schemas\order.py                   | Python           |         74 |          9 |         11 |         94 |
+| d:\Каталог товаров Портфолио\backend\app\schemas\product.py                 | Python           |         40 |          1 |         11 |         52 |
+| d:\Каталог товаров Портфолио\backend\app\services\__init__.py               | Python           |          0 |          3 |          1 |          4 |
+| d:\Каталог товаров Портфолио\backend\app\services\order_service.py          | Python           |        114 |         26 |         23 |        163 |
+| d:\Каталог товаров Портфолио\backend\app\services\sheets_sync.py            | Python           |        265 |         33 |         41 |        339 |
+| d:\Каталог товаров Портфолио\credentials\google_service_account_sample.json | JSON             |         12 |          0 |          1 |         13 |
+| d:\Каталог товаров Портфолио\frontend\css\styles.css                        | PostCSS          |        108 |          8 |         19 |        135 |
+| d:\Каталог товаров Портфолио\frontend\index.html                            | HTML             |        134 |         24 |         18 |        176 |
+| d:\Каталог товаров Портфолио\frontend\js\api.js                             | JavaScript       |         63 |          6 |         15 |         84 |
+| d:\Каталог товаров Портфолио\frontend\js\app.js                             | JavaScript       |         63 |          9 |         18 |         90 |
+| d:\Каталог товаров Портфолио\frontend\js\components\catalog.js              | JavaScript       |        154 |          4 |         19 |        177 |
+| d:\Каталог товаров Портфолио\frontend\js\components\checkoutModal.js        | JavaScript       |        378 |          7 |         31 |        416 |
+| d:\Каталог товаров Портфолио\frontend\js\components\orders.js               | JavaScript       |        148 |          4 |         15 |        167 |
+| d:\Каталог товаров Портфолио\frontend\js\components\productModal.js         | JavaScript       |        183 |          5 |         20 |        208 |
+| d:\Каталог товаров Портфолио\frontend\js\telegram.js                        | JavaScript       |         77 |          6 |         12 |         95 |
+| d:\Каталог товаров Портфолио\frontend\js\utils.js                           | JavaScript       |         73 |          6 |         13 |         92 |
+| d:\Каталог товаров Портфолио\requirements.txt                               | pip requirements |         12 |          5 |          5 |         22 |
+| d:\Каталог товаров Портфолио\run.py                                         | Python           |         17 |          3 |          4 |         24 |
+| d:\Каталог товаров Портфолио\test_e2e.py                                    | Python           |        148 |         36 |         35 |        219 |
+| d:\Каталог товаров Портфолио\tunnel.py                                      | Python           |         22 |          5 |          8 |         35 |
+| Total                                                                       |                  |      3,584 |        394 |        646 |      4,624 |
++-----------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

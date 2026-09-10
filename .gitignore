@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# SQLite & Databases
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Environment and credentials
+.env
+credentials/*.json
+!credentials/.gitkeep
+!credentials/google_service_account_sample.json
+
+# IDEs & OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
