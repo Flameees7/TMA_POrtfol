@@ -43,8 +43,9 @@ async def lifespan(app: FastAPI):
     """
     logger.info("Starting TMA Store Backend Application...")
 
-    # 1. Initialize database tables
+    # 1. Initialize database tables and upload folders
     await init_db()
+    (settings.BASE_DIR / "frontend" / "uploads").mkdir(parents=True, exist_ok=True)
 
     # 2. Perform initial synchronization or seed demo items
     try:

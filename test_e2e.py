@@ -81,8 +81,30 @@ async def run_e2e_tests():
     await init_db()
     print("[OK] Database tables created successfully.")
 
-    # 2. Test Google Sheets Sync & Seed
-    print("\n[2/7] Testing Google Sheets sync service and data seeding...")
+    # 2. Test Google Sheets Sync, Seed & Photo URL Normalization & WebP Compression
+    print("\n[2/7] Testing Google Sheets sync service, photo URL normalization & WebP compression...")
+    # Test Google Drive URL conversion
+    gdrive_test_url = "https://drive.google.com/file/d/1uSDDYX4KheutpOS_MYrDr6G0k61r0AATDn0VXF-bzyc/view?usp=sharing"
+    normalized = GoogleSheetsSyncService.normalize_photo_url(gdrive_test_url)
+    assert normalized == "https://lh3.googleusercontent.com/d/1uSDDYX4KheutpOS_MYrDr6G0k61r0AATDn0VXF-bzyc", f"Google Drive URL normalization failed: {normalized}"
+    print(f"[OK] Google Drive URL normalization verified: {normalized}")
+
+    # Test WebP conversion
+    from backend.app.services.image_service import ImageService
+    from PIL import Image
+    import io
+
+    # Generate a dummy RGB test image
+    test_img = Image.new("RGB", (800, 600), color=(16, 185, 129))
+    img_byte_arr = io.BytesIO()
+    test_img.save(img_byte_arr, format="PNG")
+    raw_png_bytes = img_byte_arr.getvalue()
+
+    test_webp_path = settings.BASE_DIR / "frontend" / "uploads" / "test_sample.webp"
+    saved_webp = ImageService.process_and_save_webp(raw_png_bytes, test_webp_path, quality=85)
+    assert saved_webp.exists() and saved_webp.stat().st_size > 0
+    print(f"[OK] ImageService WebP conversion verified: {saved_webp.name} (Size: {saved_webp.stat().st_size} bytes)")
+
     async with AsyncSessionLocal() as db:
         sync_report = await GoogleSheetsSyncService.sync_database(db)
         print(f"[OK] Sync result: {sync_report['status']}, Total items: {sync_report['total']}")
@@ -202,12 +224,28 @@ async def run_e2e_tests():
         assert res.status_code == 200
         print(f"[OK] GET /static/js/app.js passed (Size: {len(res.text)} bytes).")
 
-    # 7. Final Check
-    print("\n[7/7] Verifying Bot Routers & Dispatcher...")
+    # 7. Final Check: Bot Routers & Dispatcher & Short SKU & Photo Cleanup
+    print("\n[7/7] Verifying Bot Routers, Short SKU Generator & Image File Cleanup...")
     from backend.app.bot.bot_instance import get_dispatcher
+    from backend.app.bot.handlers.admin_products import get_next_short_sku, delete_product_local_photos
+
     dispatcher = get_dispatcher()
-    assert len(dispatcher.sub_routers) == 2, "Dispatcher missing user or admin sub-routers"
-    print("[OK] Telegram Bot Dispatcher loaded 2 sub-routers (User Commands & Admin Order Actions).")
+    assert len(dispatcher.sub_routers) == 3, f"Dispatcher should have 3 sub-routers, found {len(dispatcher.sub_routers)}"
+    print("[OK] Telegram Bot Dispatcher loaded 3 sub-routers (User Commands, Admin Orders, Admin Products).")
+
+    # Verify short SKU generation
+    async with AsyncSessionLocal() as db:
+        sku = await get_next_short_sku(db)
+        assert sku.startswith("A-") and sku[2:].isdigit(), f"Invalid short SKU: {sku}"
+        print(f"[OK] Generated clean short SKU: {sku}")
+
+    # Verify photo deletion cleanup
+    dummy_photo_path = settings.BASE_DIR / "frontend" / "uploads" / "cleanup_test.webp"
+    dummy_photo_path.write_text("test_image_content")
+    assert dummy_photo_path.exists()
+    delete_product_local_photos("/static/uploads/cleanup_test.webp")
+    assert not dummy_photo_path.exists(), "Photo file was not removed from disk!"
+    print("[OK] Image file cleanup on disk verified successfully.")
 
     print("\n================================================================")
     print("SUCCESS: ALL E2E INTEGRATION TESTS PASSED WITH 100% SUCCESS!")

@@ -37,9 +37,11 @@ def get_dispatcher() -> Dispatcher:
         # Import and register routers
         from backend.app.bot.handlers.user_commands import router as user_router
         from backend.app.bot.handlers.admin_orders import router as admin_router
+        from backend.app.bot.handlers.admin_products import router as admin_products_router
 
         dp.include_router(user_router)
         dp.include_router(admin_router)
+        dp.include_router(admin_products_router)
     return dp
 
 

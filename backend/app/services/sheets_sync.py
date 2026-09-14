@@ -88,6 +88,57 @@ class GoogleSheetsSyncService:
     """
 
     @staticmethod
+    def normalize_photo_url(url: str) -> str:
+        """
+        Normalizes various photo URL formats (Google Drive, Dropbox, etc.)
+        into direct public image links compatible with web browsers.
+        """
+        if not url:
+            return ""
+        url = url.strip()
+
+        # Google Drive format: https://drive.google.com/file/d/{FILE_ID}/view?usp=sharing
+        # or https://drive.google.com/open?id={FILE_ID} or https://drive.google.com/uc?id={FILE_ID}
+        gd_match = re.search(r"drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=view&)?id=)([a-zA-Z0-9_-]+)", url)
+        if gd_match:
+            file_id = gd_match.group(1)
+            return f"https://lh3.googleusercontent.com/d/{file_id}"
+
+        # Dropbox format: replace ?dl=0 with ?raw=1
+        if "dropbox.com" in url:
+            if "dl=0" in url:
+                return url.replace("dl=0", "raw=1")
+            elif not ("raw=1" in url or "dl=1" in url):
+                sep = "&" if "?" in url else "?"
+                return f"{url}{sep}raw=1"
+
+        return url
+
+    @classmethod
+    def _parse_photos(cls, raw_val: Any) -> str:
+        """Parses, normalizes, and joins multiple photo URLs into a clean comma-separated string."""
+        if not raw_val:
+            return ""
+        val_str = str(raw_val).strip()
+        if not val_str:
+            return ""
+
+        # Attempt JSON decoding
+        if val_str.startswith("[") and val_str.endswith("]"):
+            try:
+                parsed = json.loads(val_str)
+                if isinstance(parsed, list):
+                    normalized = [cls.normalize_photo_url(str(x)) for x in parsed if str(x).strip()]
+                    return ",".join(filter(None, normalized))
+            except json.JSONDecodeError:
+                pass
+
+        # Comma / newline separation
+        parts = [p.strip() for p in val_str.replace("\n", ",").split(",") if p.strip()]
+        normalized = [cls.normalize_photo_url(p) for p in parts]
+        return ",".join(filter(None, normalized))
+
+    @staticmethod
     def _parse_price(raw_val: Any) -> float:
         """Parses price values removing currency symbols, spaces, and commas."""
         if raw_val is None:
@@ -268,7 +319,7 @@ class GoogleSheetsSyncService:
             title = str(raw_title).strip()
             description = str(raw_desc).strip() if raw_desc else ""
             price = cls._parse_price(raw_price)
-            photos = str(raw_photos).strip() if raw_photos else ""
+            photos = cls._parse_photos(raw_photos)
             is_available, stock_status = cls._parse_availability_and_status(raw_status)
 
             # Query existing product by external_id
@@ -298,10 +349,13 @@ class GoogleSheetsSyncService:
                 db.add(product)
                 created_count += 1
 
-        # Optionally mark products not in sheet as unavailable
+        # Optionally mark products not in sheet as unavailable (except bot/manual created products)
         all_products_res = await db.execute(select(Product))
         all_products = all_products_res.scalars().all()
         for p in all_products:
+            # Preserve products created manually or via Telegram Bot (A-1, BOT-xxx, MANUAL-xxx)
+            if p.external_id.startswith("A-") or p.external_id.startswith("BOT-") or p.external_id.startswith("MANUAL-"):
+                continue
             if p.external_id not in sheet_external_ids and p.is_available:
                 p.is_available = False
                 p.stock_status = "out_of_stock"
